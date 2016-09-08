@@ -6,77 +6,62 @@
 	<link rel="stylesheet" type="text/css" href="style.css">
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 	<script type="text/javascript" src="main.js"></script>
-	
-
 </head>
 <body>
 
-
-
-<div id="container">
-
+<div id="container" class="animated bounceIn">
 	<h2> Awesome Random Quote Generator </h2>
-
 	<div id="box">
 		<h3>"Here's some dummy data!"</h3>
 		<h4> -Somebody</h4>
-
 	</div>
-
 	<button id="getQuote">Try Me!</button>
+    <button id="tweet">Tweet Me...</button>
 	
-	<h5>Courtesy of Nefertiti</h5>
-
-	
+	<h5>Courtesy of Nefertiti</h5>	
 </div>
-
 </body>
 
-
-
- <script>
+<script>
 
 $(document).ready(function() {
 
-
-
-
     $("#getQuote").on("click", function(){
-      
       doIt();
-     
     });
 
-    	function doIt() { 
- var output = $.ajax({
-    url: 'https://andruxnet-random-famous-quotes.p.mashape.com/', // The URL to the API. You can get this by clicking on "Show CURL example" from an API profile
-    type: 'GET', // The HTTP Method, can be GET POST PUT DELETE etc
-    data: {}, // Additional parameters here
-    dataType: 'json',
-    success: function(data) {
-    	//
-        //Change data.source to data.something , where something is whichever part of the object you want returned.
-        //To see the whole object you can output it to your browser console using:
-        //console.log(data);
-       	document.getElementById("box").innerHTML = "<h3>" + data.quote + "</h3> <h4>~" + data.author + "</h4>"; 
-        },
-    error: function(err) { alert(err); },
-    beforeSend: function(xhr) {
-    xhr.setRequestHeader("X-Mashape-Authorization", "dGD7UVbXWDmshjiRBg0SpCGHeYKFp1LHnzujsnHK9feY0N4yyp"); // Enter here your Mashape key
+    $("#tweet").on("click", function(){
+        tweetOut();
+    });
+
+
+    function doIt() { 
+         var output = $.ajax({
+            url: 'https://andruxnet-random-famous-quotes.p.mashape.com/', // The URL to the API. You can get this by clicking on "Show CURL example" from an API profile
+            type: 'GET', // The HTTP Method, can be GET POST PUT DELETE etc
+            data: {}, // Additional parameters here
+            dataType: 'json',
+            success: function(data) {
+                console.log(data)
+                currentQuote = data.quote;
+            	//
+                //Change data.source to data.something , where something is whichever part of the object you want returned.
+                //To see the whole object you can output it to your browser console using:
+                //console.log(data);
+               	document.getElementById("box").innerHTML = "<h3>" + data.quote + "</h3> <h4>~" + data.author + "</h4>"; 
+                },
+            error: function(err) { alert(err); },
+            beforeSend: function(xhr) {
+            xhr.setRequestHeader("X-Mashape-Authorization", "dGD7UVbXWDmshjiRBg0SpCGHeYKFp1LHnzujsnHK9feY0N4yyp"); // Enter here your Mashape key
+            }
+         });
     }
+
+    function tweetOut() {
+        window.open('https://twitter.com/intent/tweet?&text=' + encodeURIComponent(document.getElementById("box").textContent));
+    }
+    
 });
 
-  
-
-}
-
-
-
-
-  });
-
-
-
 </script>
-
 </html>
